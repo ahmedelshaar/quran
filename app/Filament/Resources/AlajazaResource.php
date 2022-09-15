@@ -43,13 +43,12 @@ class AlajazaResource extends Resource
                         ->options(Sheikh::all()->pluck('name', 'id')),
                     Repeater::make('sheikhs')
                         ->schema([
-                            Select::make('role')
+                            Select::make('sheikhs')
                                 ->name('الشيخ')
                                 ->options(
                                     Sheikh::all()->pluck('name', 'id')
                                 )
                                 ->searchable()
-                                ->required(),
                         ])
                         ->required(),
                     Forms\Components\Select::make('sanad_type_id')
@@ -102,5 +101,10 @@ class AlajazaResource extends Resource
             'create' => Pages\CreateAlajaza::route('/create'),
             'edit' => Pages\EditAlajaza::route('/{record}/edit'),
         ];
+    }
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        print_r($data);
+        return $data;
     }
 }
