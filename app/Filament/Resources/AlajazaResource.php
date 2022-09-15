@@ -17,6 +17,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AlajazaResource extends Resource
@@ -104,7 +105,22 @@ class AlajazaResource extends Resource
     }
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        print_r($data);
+        echo($data);
+        error_log('Some message here.');
+
         return $data;
+    }
+
+    protected function beforeCreate(): void
+    {
+
+    }
+
+    protected function handleRecordCreation(array $data): Model
+    {
+        print_r($data);
+        error_log('Some message here.');
+
+        return static::getModel()::create($data);
     }
 }
