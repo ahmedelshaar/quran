@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\SheikhController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('admin.layout.app');
+    return view('welcome');
 });
-
-Route::resource('sheikh', SheikhController::class);

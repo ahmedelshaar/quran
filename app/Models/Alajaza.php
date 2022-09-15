@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Alajaza extends Model
 {
     use HasFactory;
+    protected $fillable = ['sheikh_id','sheikhs','sanad_type_id', 'rewaya_id'];
 }
