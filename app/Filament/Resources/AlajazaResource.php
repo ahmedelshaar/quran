@@ -24,7 +24,7 @@ class AlajazaResource extends Resource
 {
     protected static ?string $model = Alajaza::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     protected static ?string $navigationLabel = 'الاجازات';
 
@@ -51,7 +51,8 @@ class AlajazaResource extends Resource
                                 )
                                 ->searchable()
                         ])
-                        ->required(),
+                        ->required()
+                    ->label('الشيوخ'),
                     Forms\Components\Select::make('sanad_type_id')
                         ->label('نوع السند')
                         ->searchable()
@@ -68,14 +69,13 @@ class AlajazaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('sheikh_id'),
-                Tables\Columns\TextColumn::make('sanad_type_id'),
-                Tables\Columns\TextColumn::make('rewaya_id'),
-                Tables\Columns\TextColumn::make('sheikhs'),
+                Tables\Columns\TextColumn::make('sheikh.name')->label('اسم الشيخ')->searchable(),
+                Tables\Columns\TextColumn::make('sanad_type.name')->label('نوع السند'),
+                Tables\Columns\TextColumn::make('rewaya.name')->label('نوع الرواية'),
+                Tables\Columns\TextColumn::make('count')->label('العدد'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->dateTime()
+                    ->label('تاريخ الانشاء'),
             ])
             ->filters([
                 //
@@ -103,24 +103,5 @@ class AlajazaResource extends Resource
             'edit' => Pages\EditAlajaza::route('/{record}/edit'),
         ];
     }
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        echo($data);
-        error_log('Some message here.');
 
-        return $data;
-    }
-
-    protected function beforeCreate(): void
-    {
-
-    }
-
-    protected function handleRecordCreation(array $data): Model
-    {
-        print_r($data);
-        error_log('Some message here.');
-
-        return static::getModel()::create($data);
-    }
 }

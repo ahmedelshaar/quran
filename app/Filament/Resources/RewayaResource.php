@@ -17,7 +17,7 @@ class RewayaResource extends Resource
 {
     protected static ?string $model = Rewaya::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-heart';
 
     protected static ?string $navigationLabel = 'روايات';
 
@@ -33,6 +33,9 @@ class RewayaResource extends Resource
                     Forms\Components\TextInput::make('name')
                         ->label('اسم')
                         ->required()
+                        ->datalist(
+                            Rewaya::all()->pluck('name')->toArray()
+                        )
                         ->maxLength(255),
                 ])
             ]);
@@ -42,7 +45,7 @@ class RewayaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('اسم'),
+                Tables\Columns\TextColumn::make('name')->label('اسم')->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()->label('تاريخ الانشاء'),
             ])

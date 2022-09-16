@@ -34,6 +34,9 @@ class SanadTypeResource extends Resource
                     Forms\Components\TextInput::make('name')
                         ->required()
                         ->label('الاسم')
+                        ->datalist(
+                            SanadType::all()->pluck('name')->toArray()
+                        )
                         ->maxLength(255),
                 ])
             ]);
@@ -43,7 +46,7 @@ class SanadTypeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('الاسم'),
+                Tables\Columns\TextColumn::make('name')->label('الاسم')->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('تاريخ الانشاء')
                     ->dateTime(),

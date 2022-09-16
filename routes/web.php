@@ -14,5 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    $x = \App\Models\Sheikh::first();
+    return $x->alajaza;
     return view('welcome');
 });
