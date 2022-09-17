@@ -4,9 +4,9 @@ namespace App\Filament\Resources\AlajazaResource\Pages;
 
 use App\Filament\Resources\AlajazaResource;
 use Filament\Pages\Actions;
-use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\ViewRecord;
 
-class CreateAlajaza extends CreateRecord
+class ViewAlajaza extends ViewRecord
 {
     protected static string $resource = AlajazaResource::class;
 }

@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CountryResource\Pages;
 use App\Filament\Resources\CountryResource\RelationManagers;
+use App\Helper\CheckPermission;
 use App\Models\Country;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -15,6 +16,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CountryResource extends Resource
 {
+    use CheckPermission;
+
+    public static function getNameTable()
+    {
+        return 'countries.';
+    }
+
     protected static ?string $model = Country::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
@@ -50,14 +58,13 @@ class CountryResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('اسم الدولة')->searchable(),
                 Tables\Columns\ImageColumn::make('flag')->label('علم الدولة'),
-                Tables\Columns\TextColumn::make('created_at')->label('تاريخ الانشاء')
-                    ->dateTime(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -77,6 +84,7 @@ class CountryResource extends Resource
             'index' => Pages\ListCountries::route('/'),
             'create' => Pages\CreateCountry::route('/create'),
             'edit' => Pages\EditCountry::route('/{record}/edit'),
+            'view' => Pages\ViewCountry::route('/{record}'),
         ];
     }
 }

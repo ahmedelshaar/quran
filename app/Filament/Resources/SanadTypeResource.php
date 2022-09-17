@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SanadTypeResource\Pages;
 use App\Filament\Resources\SanadTypeResource\RelationManagers;
+use App\Helper\CheckPermission;
 use App\Models\SanadType;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -15,6 +16,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SanadTypeResource extends Resource
 {
+    use CheckPermission;
+
+    public static function getNameTable()
+    {
+        return 'sanad-types.';
+    }
+
     protected static ?string $model = SanadType::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
@@ -47,15 +55,13 @@ class SanadTypeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('الاسم')->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الانشاء')
-                    ->dateTime(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -75,6 +81,7 @@ class SanadTypeResource extends Resource
             'index' => Pages\ListSanadTypes::route('/'),
             'create' => Pages\CreateSanadType::route('/create'),
             'edit' => Pages\EditSanadType::route('/{record}/edit'),
+            'view' => Pages\ViewSanadType::route('/{record}'),
         ];
     }
 }

@@ -4,10 +4,15 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AlajazaResource\Pages;
 use App\Filament\Resources\AlajazaResource\RelationManagers;
+use App\Helper\CheckPermission;
 use App\Models\Alajaza;
 use App\Models\Rewaya;
 use App\Models\SanadType;
 use App\Models\Sheikh;
+use App\Models\User;
+use Chiiya\FilamentAccessControl\Models\FilamentUser;
+use Closure;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -19,9 +24,17 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class AlajazaResource extends Resource
 {
+    use CheckPermission;
+
+    public static function getNameTable()
+    {
+        return 'alajazas.';
+    }
+
     protected static ?string $model = Alajaza::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
@@ -31,6 +44,8 @@ class AlajazaResource extends Resource
     protected static ?string $pluralModelLabel = 'الاجازات';
 
     protected static ?string $modelLabel = 'الاجازة';
+
+
 
     public static function form(Form $form): Form
     {
@@ -73,15 +88,13 @@ class AlajazaResource extends Resource
                 Tables\Columns\TextColumn::make('sanad_type.name')->label('نوع السند'),
                 Tables\Columns\TextColumn::make('rewaya.name')->label('نوع الرواية'),
                 Tables\Columns\TextColumn::make('count')->label('العدد'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->label('تاريخ الانشاء'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -101,6 +114,7 @@ class AlajazaResource extends Resource
             'index' => Pages\ListAlajazas::route('/'),
             'create' => Pages\CreateAlajaza::route('/create'),
             'edit' => Pages\EditAlajaza::route('/{record}/edit'),
+            'view' => Pages\ViewAlajaza::route('/{record}'),
         ];
     }
 

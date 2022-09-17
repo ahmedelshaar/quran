@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RewayaResource\Pages;
 use App\Filament\Resources\RewayaResource\RelationManagers;
+use App\Helper\CheckPermission;
 use App\Models\Rewaya;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -15,6 +16,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RewayaResource extends Resource
 {
+    use CheckPermission;
+
+    public static function getNameTable()
+    {
+        return 'rewayas.';
+    }
+
     protected static ?string $model = Rewaya::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-heart';
@@ -46,14 +54,13 @@ class RewayaResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('اسم')->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()->label('تاريخ الانشاء'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -73,6 +80,7 @@ class RewayaResource extends Resource
             'index' => Pages\ListRewayas::route('/'),
             'create' => Pages\CreateRewaya::route('/create'),
             'edit' => Pages\EditRewaya::route('/{record}/edit'),
+            'view' => Pages\ViewRewaya::route('/{record}'),
         ];
     }
 }

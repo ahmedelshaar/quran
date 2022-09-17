@@ -4,21 +4,29 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SheikhResource\Pages;
 use App\Filament\Resources\SheikhResource\RelationManagers;
+use App\Helper\CheckPermission;
 use App\Models\Country;
 use App\Models\Sheikh;
 use Filament\Forms;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\ViewField;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class SheikhResource extends Resource
 {
+    use CheckPermission;
+
+    public static function getNameTable()
+    {
+        return 'sheikhs.';
+    }
+
     protected static ?string $model = Sheikh::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
@@ -49,15 +57,15 @@ class SheikhResource extends Resource
                         ->searchable()
                         ->options(Country::all()->pluck('name', 'id')),
                     Forms\Components\Textarea::make('notes')->label('ملاحظات'),
+//                    Forms\Components\Textarea::make('alajaza')->label('ملاحظات'),
 //                    Repeater::make('alajaza')
-//                        ->relationship('alajaza', 'sheikhs')
-//                        ->schema([
-//                            Select::make('sheikh')
-//                                ->name('الشيخ')
-//                                ->options(
-//                                    Sheikh::all()->pluck('name', 'id')
-//                                )
-//                                ->searchable()
+//                    ->schema([
+//                        Repeater::make('sheikhs')
+//                            ->name('الشيخ')
+//                            ->options(
+//                                Sheikh::all()->pluck('name', 'id')
+//                            )
+//                            ->searchable()
 //                    ])
                 ])
             ]);
@@ -71,14 +79,13 @@ class SheikhResource extends Resource
                 Tables\Columns\TextColumn::make('country.name')->label('الدولة'),
                 Tables\Columns\TextColumn::make('nickname')->label('الكنية'),
                 Tables\Columns\TextColumn::make('count')->label('عدد الاجازات'),
-                Tables\Columns\TextColumn::make('created_at')->label('تاريخ الانشاء')
-                    ->dateTime(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -98,11 +105,7 @@ class SheikhResource extends Resource
             'index' => Pages\ListSheikhs::route('/'),
             'create' => Pages\CreateSheikh::route('/create'),
             'edit' => Pages\EditSheikh::route('/{record}/edit'),
+            'view' => Pages\ViewSheikh::route('/{record}')
         ];
-    }
-
-    public static function getGlobalSearchResultTitle(Model $record): string
-    {
-        return $record->name;
     }
 }
