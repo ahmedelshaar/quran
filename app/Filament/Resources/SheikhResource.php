@@ -57,16 +57,10 @@ class SheikhResource extends Resource
                         ->searchable()
                         ->options(Country::all()->pluck('name', 'id')),
                     Forms\Components\Textarea::make('notes')->label('ملاحظات'),
-//                    Forms\Components\Textarea::make('alajaza')->label('ملاحظات'),
-//                    Repeater::make('alajaza')
-//                    ->schema([
-//                        Repeater::make('sheikhs')
-//                            ->name('الشيخ')
-//                            ->options(
-//                                Sheikh::all()->pluck('name', 'id')
-//                            )
-//                            ->searchable()
-//                    ])
+                    ViewField::make('alajaza')
+                    ->schema([
+
+                    ])->view('show_alajaza')
                 ])
             ]);
     }
