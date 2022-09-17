@@ -57,10 +57,7 @@ class SheikhResource extends Resource
                         ->searchable()
                         ->options(Country::all()->pluck('name', 'id')),
                     Forms\Components\Textarea::make('notes')->label('ملاحظات'),
-                    ViewField::make('alajaza')
-                    ->schema([
-
-                    ])->view('show_alajaza')
+                    Forms\Components\Textarea::make('alajaza.sheikhs')->label('ملاحظات'),
                 ])
             ]);
     }
@@ -89,7 +86,7 @@ class SheikhResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\AlajazaRelationManager::class
         ];
     }
 
